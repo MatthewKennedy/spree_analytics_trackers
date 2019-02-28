@@ -1,23 +1,26 @@
   <% if tracker = Spree::Tracker.current(:google_analytics)  %>
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
       <script async src='https://www.googletagmanager.com/gtag/js?id=<%= tracker.analytics_id %>'></script>
       <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', '<%= tracker.analytics_id %>', {
-              'groups': 'analytics_tag',
-              'custom_map': {
-                'dimension1': 'ecomm_prodid',
-                'dimension2': 'ecomm_pagetype',
-                'dimension3': 'ecomm_totalvalue',
-                'dimension4': 'ecomm_catagory'
-              }
+          'groups': 'analytics_tag',
+        <% if ['product-details','cart', 'checkout-page', 'purchase'].include?(@body_id) %>
+          'send_page_view': false,
+        <% end %>
+          'custom_map': {
+            'dimension1': 'ecomm_prodid',
+            'dimension2': 'ecomm_pagetype',
+            'dimension3': 'ecomm_totalvalue',
+            'dimension4': 'ecomm_catagory'
+          }
+
         });
 
         <% if tracker = Spree::Tracker.current(:google_ads) %>
-        gtag('config', '<%= tracker.analytics_id %>', {
+        gtag('config', 'AW-<%= tracker.analytics_id %>', {
           'groups': 'ads_tag',
           'send_page_view': false,
         });
