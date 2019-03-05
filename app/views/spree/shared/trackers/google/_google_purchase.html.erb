@@ -15,6 +15,18 @@
 
           });
 
+          gtag('event', 'ecommerce_purchase', {
+            'send_to': [
+              <% if tracker = Spree::Tracker.current(:google_ads) %>'ads_tag',<% end %>
+            ],
+
+            'google_business_vertical': 'retail',
+            'value': <%= (@order.total - @order.ship_total ) - @order.tax_total.to_f %>,
+            'items': [
+                <%= render partial: 'spree/shared/trackers/google/google_add_items', locals: { order: @order } %>
+            ]
+          });
+
           gtag('event', 'purchase', {
             'send_to': [
               <% if tracker = Spree::Tracker.current(:google_analytics) %>'analytics_tag',<% end %>
